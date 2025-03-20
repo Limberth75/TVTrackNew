@@ -14,7 +14,7 @@ namespace TVTrack
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            // Cargar un usuario de prueba para evitar errores
+            // Cargar un usuario inicial de prueba para evitar errores
             Usuario usuarioInicial = new Usuario("Administrador", "admin@example.com", "admin123", "Admin");
 
             Application.Run(new MainForm(usuarioInicial));

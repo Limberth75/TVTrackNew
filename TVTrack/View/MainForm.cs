@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
-using TVTrack.Model;
 using TVTrack.Controller;
+using TVTrack.Model;
 
 namespace TVTrack.View
 {
@@ -13,6 +13,13 @@ namespace TVTrack.View
         {
             InitializeComponent();
             usuarioActual = usuario;
+
+            // Verifica si hay menos de 100 usuarios y genera los que faltan
+            int usuariosActuales = UsuarioController.ObtenerUsuarios().Count;
+            if (usuariosActuales < 100)
+            {
+                UsuarioController.GenerarUsuariosAleatorios(100 - usuariosActuales);
+            }
         }
 
         private void btnRegistrar_Click(object sender, EventArgs e)

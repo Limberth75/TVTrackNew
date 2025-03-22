@@ -14,7 +14,8 @@ namespace TVTrack.View
         {
             InitializeComponent();
             usuarioActual = usuario;
-            CargarRecomendaciones();
+
+        
         }
 
         private void CargarRecomendaciones()

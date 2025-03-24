@@ -1,7 +1,5 @@
 using System;
 using System.Windows.Forms;
-using TVTrack.Controller;
-using TVTrack.Model;
 using TVTrack.View;
 
 namespace TVTrack
@@ -14,10 +12,8 @@ namespace TVTrack
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            // Cargar un usuario inicial de prueba para evitar errores
-            Usuario usuarioInicial = new Usuario("Administrador", "admin@example.com", "admin123", "Admin");
-
-            Application.Run(new MainForm(usuarioInicial));
+            // Iniciar desde el formulario de login
+            Application.Run(new LoginForm());
         }
     }
 }

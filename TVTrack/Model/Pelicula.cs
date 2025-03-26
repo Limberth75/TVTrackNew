@@ -1,15 +1,25 @@
 ﻿using System.Collections.Generic;
 
-public class Pelicula
+namespace TVTrack.Model
 {
-    public string Titulo { get; set; }
-    public string Genero { get; set; }
-    public string Plataforma { get; set; }
-
-    public Pelicula(string titulo, string genero, string plataforma)
+    // Clase que representa una película con su título, género y plataforma
+    public class Pelicula
     {
-        Titulo = titulo;
-        Genero = genero;
-        Plataforma = plataforma;
+        // Título de la película (Ej: "Inception", "Titanic")
+        public string Titulo { get; set; }
+
+        // Género de la película (Ej: Acción, Comedia, Drama)
+        public string Genero { get; set; }
+
+        // Plataforma donde está disponible (Ej: Netflix, HBO, Disney+)
+        public string Plataforma { get; set; }
+
+        // Constructor que inicializa una nueva instancia de Película
+        public Pelicula(string titulo, string genero, string plataforma)
+        {
+            Titulo = titulo;
+            Genero = genero;
+            Plataforma = plataforma;
+        }
     }
 }

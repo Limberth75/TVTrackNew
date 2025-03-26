@@ -21,7 +21,7 @@ namespace TVTrack.Controller
                 .GroupBy(c => c.Categoria)            // Agrupa los contenidos por categoría
                 .OrderByDescending(g => g.Count())    // Ordena los grupos por cantidad de veces vistos
                 .Select(g => g.Key)                   // Extrae el nombre del género
-                .FirstOrDefault();                    // Toma el género más frecuente
+                .FirstOrDefault() ?? "Sin categoría"; // Usa valor por defecto para evitar null
 
             // Filtra contenidos que coincidan con el género favorito y que el usuario aún no haya visto
             List<Contenido> recomendaciones = ContenidoController.ObtenerContenido()

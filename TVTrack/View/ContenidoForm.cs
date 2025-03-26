@@ -13,8 +13,8 @@ namespace TVTrack.View
         // Usuario actualmente activo en la sesión
         private Usuario usuarioActual;
 
-        // Lista completa del contenido cargado
-        private List<Contenido> listaContenido;
+        // Lista completa del contenido cargado 
+        private List<Contenido> listaContenido = new List<Contenido>();
 
         // Constructor del formulario: recibe el usuario actual y carga el contenido
         public ContenidoForm(Usuario usuario)

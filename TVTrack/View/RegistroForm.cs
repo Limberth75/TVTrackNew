@@ -8,7 +8,7 @@ namespace TVTrack.View
     // Formulario para registrar un nuevo usuario en el sistema
     public partial class RegistroForm : Form
     {
-        // Constructor: inicializa los componentes y llena el ComboBox de roles
+        // Constructor: inicializa los componentes y carga los roles disponibles
         public RegistroForm()
         {
             InitializeComponent();
@@ -28,7 +28,9 @@ namespace TVTrack.View
             string nombre = txtNombre.Text.Trim();
             string email = txtEmail.Text.Trim();
             string contraseña = txtContraseña.Text.Trim();
-            string rol = cmbRol.SelectedItem.ToString(); // Obtiene el rol seleccionado
+
+            // Verifica que haya una selección válida en el ComboBox y la convierte a string
+            string rol = cmbRol.SelectedItem?.ToString() ?? "Usuario"; // ← Aquí resolvemos los 3 warnings
 
             // Validación: todos los campos son obligatorios
             if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(contraseña))

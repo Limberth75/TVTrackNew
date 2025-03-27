@@ -35,7 +35,7 @@ namespace TVTrack.View
                 string generoFavorito = Recomendador.ObtenerGeneroFavorito(usuarioActual);
 
                 // Mostrar encabezado
-                lstRecomendaciones.Items.Add($"🔎 Basado en tu historial, tu género favorito es: {generoFavorito}");
+                lstRecomendaciones.Items.Add($" Basado en tu historial, tu género favorito es: {generoFavorito}");
                 lstRecomendaciones.Items.Add("");
 
                 // Generar recomendaciones
@@ -45,17 +45,17 @@ namespace TVTrack.View
                 {
                     foreach (var rec in recomendaciones)
                     {
-                        lstRecomendaciones.Items.Add($"🎬 {rec.Titulo} - {rec.Categoria}");
+                        lstRecomendaciones.Items.Add($" {rec.Titulo} - {rec.Categoria}");
                     }
                 }
                 else
                 {
-                    lstRecomendaciones.Items.Add("⚠️ No hay recomendaciones disponibles.");
+                    lstRecomendaciones.Items.Add(" No hay recomendaciones disponibles.");
                 }
             }
             else
             {
-                lstRecomendaciones.Items.Add("⚠️ Tu historial está vacío. Ve contenido para obtener recomendaciones.");
+                lstRecomendaciones.Items.Add(" Tu historial está vacío. Ve contenido para obtener recomendaciones.");
             }
         }
     }

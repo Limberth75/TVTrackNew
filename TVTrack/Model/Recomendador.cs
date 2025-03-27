@@ -55,7 +55,7 @@ namespace TVTrack.Controller
             return recomendaciones;
         }
 
-        // ✅ MÉTODO NUEVO para obtener el género favorito del usuario
+        // Metodo para obtener el género favorito del usuario
         public static string ObtenerGeneroFavorito(Usuario usuario)
         {
             if (usuario.Historial == null || usuario.Historial.Count == 0)

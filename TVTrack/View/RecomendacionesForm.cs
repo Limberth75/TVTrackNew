@@ -17,32 +17,32 @@ namespace TVTrack.View
             usuarioActual = usuario;
         }
 
-        // Evento: se ejecuta al hacer clic en el botón de cargar recomendaciones
+        // Evento: al hacer clic en el botón "Cargar Recomendaciones"
         private void btnCargarRecomendaciones_Click(object sender, EventArgs e)
         {
             CargarRecomendaciones();
         }
 
-        // Carga las recomendaciones y las muestra en el ListBox
+        // Lógica principal: carga las recomendaciones y el historial
         private void CargarRecomendaciones()
         {
             lstRecomendaciones.Items.Clear();
 
-            // Validar que el usuario tenga historial
             if (usuarioActual.Historial != null && usuarioActual.Historial.Count > 0)
             {
-                // Obtener género favorito
+                // Género favorito
                 string generoFavorito = Recomendador.ObtenerGeneroFavorito(usuarioActual);
 
-                // Mostrar encabezado
+                // Encabezado
                 lstRecomendaciones.Items.Add($" Basado en tu historial, tu género favorito es: {generoFavorito}");
                 lstRecomendaciones.Items.Add("");
 
-                // Generar recomendaciones
+                // Recomendaciones
                 List<Contenido> recomendaciones = Recomendador.GenerarRecomendaciones(usuarioActual);
 
                 if (recomendaciones != null && recomendaciones.Count > 0)
                 {
+                    lstRecomendaciones.Items.Add(" Recomendaciones personalizadas:");
                     foreach (var rec in recomendaciones)
                     {
                         lstRecomendaciones.Items.Add($" {rec.Titulo} - {rec.Categoria}");
@@ -52,10 +52,18 @@ namespace TVTrack.View
                 {
                     lstRecomendaciones.Items.Add(" No hay recomendaciones disponibles.");
                 }
+
+                // Mostrar historial del usuario
+                lstRecomendaciones.Items.Add("");
+                lstRecomendaciones.Items.Add(" Historial de visualización:");
+                foreach (var item in usuarioActual.Historial)
+                {
+                    lstRecomendaciones.Items.Add($" {item.Titulo} - {item.Categoria}");
+                }
             }
             else
             {
-                lstRecomendaciones.Items.Add(" Tu historial está vacío. Ve contenido para obtener recomendaciones.");
+                lstRecomendaciones.Items.Add(" No se encontraron recomendaciones porque no tienes historial.");
             }
         }
     }

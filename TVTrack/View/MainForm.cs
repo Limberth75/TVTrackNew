@@ -18,12 +18,14 @@ namespace TVTrack.View
             usuarioActual = usuario;
 
             // Control de acceso según rol
-            // Si el usuario es solo "Usuario", se restringen funcionalidades
             if (usuarioActual.Rol == "Usuario")
             {
-                btnReportes.Enabled = false;   // Desactiva botón de reportes
-                btnRegistrar.Enabled = false;  // Desactiva botón de registro
+                btnReportes.Enabled = false;
+                btnRegistrar.Enabled = false;
             }
+
+            // SUSCRIPCIÓN al evento del patrón OBSERVER
+            UsuarioController.UsuarioAgregado += OnUsuarioAgregado;
 
             // Verifica y genera usuarios si hay menos de 100
             int usuariosActuales = UsuarioController.ObtenerUsuarios().Count;
@@ -33,7 +35,13 @@ namespace TVTrack.View
             }
         }
 
-        // Evento: abre el formulario de registro de usuario (solo admins)
+        // OBSERVADOR: se ejecuta cuando se registra un nuevo usuario
+        private void OnUsuarioAgregado()
+        {
+            MessageBox.Show("🔔 Se ha registrado un nuevo usuario.", "Notificación", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        // Evento: abrir formulario de registro (solo admins)
         private void btnRegistrar_Click(object sender, EventArgs e)
         {
             if (usuarioActual.Rol != "Administrador")
@@ -42,22 +50,21 @@ namespace TVTrack.View
                 return;
             }
 
-            // Pasa el usuario actual para validar rol dentro del formulario
             RegistroForm registroForm = new RegistroForm(usuarioActual);
             registroForm.ShowDialog();
 
-            // Solo actualiza si se registró un nuevo usuario
+            // Solo actualiza el usuario actual si se registró uno nuevo
             if (registroForm.UsuarioRegistrado)
             {
                 var usuarios = UsuarioController.ObtenerUsuarios();
                 if (usuarios.Count > 0)
                 {
-                    usuarioActual = usuarios[^1]; // Último usuario agregado
+                    usuarioActual = usuarios[^1]; // Último usuario registrado
                 }
             }
         }
 
-        // Evento: abre el formulario de recomendaciones (acceso libre)
+        // Evento: abrir recomendaciones (acceso libre)
         private void btnRecomendaciones_Click(object sender, EventArgs e)
         {
             if (usuarioActual == null)
@@ -70,7 +77,7 @@ namespace TVTrack.View
             recomendacionesForm.ShowDialog();
         }
 
-        // Evento: abre el formulario de reportes (solo admins)
+        // Evento: abrir reportes (solo admins)
         private void btnReportes_Click(object sender, EventArgs e)
         {
             if (usuarioActual.Rol != "Administrador")
@@ -83,7 +90,7 @@ namespace TVTrack.View
             reportesForm.ShowDialog();
         }
 
-        // Evento: abre el formulario de contenido (acceso libre)
+        // Evento: abrir formulario de contenido (acceso libre)
         private void btnContenido_Click(object sender, EventArgs e)
         {
             if (usuarioActual == null)

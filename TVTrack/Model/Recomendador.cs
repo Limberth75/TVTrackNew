@@ -4,33 +4,68 @@ using TVTrack.Model;
 
 namespace TVTrack.Controller
 {
-    // Clase estática encargada de generar recomendaciones de contenido para los usuarios
     public static class Recomendador
     {
-        // Genera una lista de recomendaciones basadas en el historial del usuario
         public static List<Contenido> GenerarRecomendaciones(Usuario usuario)
         {
-            // Si el usuario no ha visto ningún contenido, no se puede generar una recomendación personalizada
             if (usuario.Historial.Count == 0)
             {
                 return new List<Contenido>();
             }
 
-            // Determina el género más frecuente en el historial del usuario
-            string generoFavorito = usuario.Historial
-                .GroupBy(c => c.Categoria)            // Agrupa los contenidos por categoría
-                .OrderByDescending(g => g.Count())    // Ordena los grupos por cantidad de veces vistos
-                .Select(g => g.Key)                   // Extrae el nombre del género
-                .FirstOrDefault() ?? "Sin categoría"; // Usa valor por defecto para evitar null
-
-            // Filtra contenidos que coincidan con el género favorito y que el usuario aún no haya visto
-            List<Contenido> recomendaciones = ContenidoController.ObtenerContenido()
-                .Where(c => c.Categoria == generoFavorito && !usuario.Historial.Contains(c))
-                .Take(5) // Limita las recomendaciones a un máximo de 5 contenidos
+            var generosFavoritos = usuario.Historial
+                .GroupBy(c => c.Categoria)
+                .OrderByDescending(g => g.Count())
+                .Select(g => g.Key)
                 .ToList();
 
-            // Devuelve la lista de contenidos recomendados
+            var contenidoDisponible = ContenidoController.ObtenerContenido();
+            List<Contenido> recomendaciones = new List<Contenido>();
+
+            foreach (var genero in generosFavoritos)
+            {
+                var recomendacionesGenero = contenidoDisponible
+                    .Where(c => c.Categoria == genero && !usuario.Historial.Contains(c))
+                    .ToList();
+
+                foreach (var rec in recomendacionesGenero)
+                {
+                    if (recomendaciones.Count < 5)
+                    {
+                        recomendaciones.Add(rec);
+                    }
+                    else break;
+                }
+
+                if (recomendaciones.Count >= 5)
+                    break;
+            }
+
+            if (recomendaciones.Count == 0)
+            {
+                var aleatorios = contenidoDisponible
+                    .Where(c => !usuario.Historial.Contains(c))
+                    .OrderBy(c => System.Guid.NewGuid())
+                    .Take(3)
+                    .ToList();
+
+                recomendaciones.AddRange(aleatorios);
+            }
+
             return recomendaciones;
+        }
+
+        // ✅ MÉTODO NUEVO para obtener el género favorito del usuario
+        public static string ObtenerGeneroFavorito(Usuario usuario)
+        {
+            if (usuario.Historial == null || usuario.Historial.Count == 0)
+                return "N/A";
+
+            return usuario.Historial
+                .GroupBy(c => c.Categoria)
+                .OrderByDescending(g => g.Count())
+                .Select(g => g.Key)
+                .FirstOrDefault() ?? "N/A";
         }
     }
 }

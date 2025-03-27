@@ -5,51 +5,58 @@ using TVTrack.Model;
 
 namespace TVTrack.View
 {
-    // Formulario para registrar un nuevo usuario en el sistema
+    // Formulario para registrar un nuevo usuario
     public partial class RegistroForm : Form
     {
-        // Constructor: inicializa los componentes y carga los roles disponibles
-        public RegistroForm()
+        private Usuario? usuarioActual;
+
+        // Indica si se registró un usuario nuevo (usado por MainForm)
+        public bool UsuarioRegistrado { get; private set; } = false;
+
+        // Constructor: recibe opcionalmente el usuario actual para control de rol
+        public RegistroForm(Usuario? usuario = null)
         {
             InitializeComponent();
+            usuarioActual = usuario;
 
-            // Agrega opciones al ComboBox de roles
+            // Validación de rol: solo permite acceso a administradores
+            if (usuarioActual != null && usuarioActual.Rol != "Administrador")
+            {
+                MessageBox.Show("Acceso denegado: solo administradores pueden registrar usuarios.", "Permiso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.Close();
+                return;
+            }
+
+            // Cargar roles en ComboBox
             cmbRol.Items.Add("Usuario");
             cmbRol.Items.Add("Administrador");
-
-            // Selecciona "Usuario" por defecto
             cmbRol.SelectedIndex = 0;
         }
 
-        // Evento: se ejecuta al hacer clic en el botón "Guardar"
+        // Evento: guarda el nuevo usuario
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            // Obtiene los datos ingresados por el usuario
             string nombre = txtNombre.Text.Trim();
             string email = txtEmail.Text.Trim();
             string contraseña = txtContraseña.Text.Trim();
+            string rol = cmbRol.SelectedItem?.ToString() ?? "Usuario";
 
-            // Verifica que haya una selección válida en el ComboBox y la convierte a string
-            string rol = cmbRol.SelectedItem?.ToString() ?? "Usuario"; // ← Aquí resolvemos los 3 warnings
-
-            // Validación: todos los campos son obligatorios
             if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(contraseña))
             {
                 MessageBox.Show(" Todos los campos son obligatorios.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            // Validación: formato básico del email
             if (!email.Contains("@") || !email.Contains("."))
             {
                 MessageBox.Show(" Ingresa un email válido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            // Agrega el nuevo usuario usando el controlador
+            // Registrar usuario y marcar que se registró
             UsuarioController.AgregarUsuario(nombre, email, contraseña, rol);
+            UsuarioRegistrado = true;
 
-            // Muestra mensaje de éxito y cierra el formulario
             MessageBox.Show($" Usuario {nombre} registrado con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Close();
         }

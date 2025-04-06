@@ -5,6 +5,8 @@ VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TVTrack", "TVTrack\TVTrack.csproj", "{F7C8EEC5-0AAA-4B3B-BAD4-A3CDF36E7D06}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TVTrackV2", "TVTrackV2\TVTrackV2.csproj", "{750A86A8-1E9F-4539-88C6-250FE40812AB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{F7C8EEC5-0AAA-4B3B-BAD4-A3CDF36E7D06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7C8EEC5-0AAA-4B3B-BAD4-A3CDF36E7D06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7C8EEC5-0AAA-4B3B-BAD4-A3CDF36E7D06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{750A86A8-1E9F-4539-88C6-250FE40812AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{750A86A8-1E9F-4539-88C6-250FE40812AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{750A86A8-1E9F-4539-88C6-250FE40812AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{750A86A8-1E9F-4539-88C6-250FE40812AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

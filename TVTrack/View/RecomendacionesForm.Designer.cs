@@ -2,10 +2,14 @@
 {
     partial class RecomendacionesForm
     {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.ListBox lstRecomendaciones;
-        private System.Windows.Forms.Button btnCargarRecomendaciones;
 
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -15,45 +19,55 @@
             base.Dispose(disposing);
         }
 
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
         private void InitializeComponent()
         {
-            lstRecomendaciones = new ListBox();
-            btnCargarRecomendaciones = new Button();
-            SuspendLayout();
+            this.lstRecomendaciones = new System.Windows.Forms.ListBox();
+            this.btnCargarRecomendaciones = new System.Windows.Forms.Button();
+            this.SuspendLayout();
             // 
             // lstRecomendaciones
             // 
-            lstRecomendaciones.FormattingEnabled = true;
-            lstRecomendaciones.ItemHeight = 25;
-            lstRecomendaciones.Location = new Point(25, 31);
-            lstRecomendaciones.Margin = new Padding(4, 5, 4, 5);
-            lstRecomendaciones.Name = "lstRecomendaciones";
-            lstRecomendaciones.Size = new Size(436, 304);
-            lstRecomendaciones.TabIndex = 0;
+            this.lstRecomendaciones.FormattingEnabled = true;
+            this.lstRecomendaciones.ItemHeight = 15;
+            this.lstRecomendaciones.Location = new System.Drawing.Point(12, 12);
+            this.lstRecomendaciones.Name = "lstRecomendaciones";
+            this.lstRecomendaciones.Size = new System.Drawing.Size(460, 364);
+            this.lstRecomendaciones.TabIndex = 0;
             // 
             // btnCargarRecomendaciones
             // 
-            btnCargarRecomendaciones.Location = new Point(25, 359);
-            btnCargarRecomendaciones.Margin = new Padding(4, 5, 4, 5);
-            btnCargarRecomendaciones.Name = "btnCargarRecomendaciones";
-            btnCargarRecomendaciones.Size = new Size(250, 47);
-            btnCargarRecomendaciones.TabIndex = 1;
-            btnCargarRecomendaciones.Text = "Cargar Recomendaciones";
-            btnCargarRecomendaciones.TextAlign = ContentAlignment.MiddleRight;
-            btnCargarRecomendaciones.UseVisualStyleBackColor = true;
-            btnCargarRecomendaciones.Click += btnCargarRecomendaciones_Click;
+            this.btnCargarRecomendaciones.Location = new System.Drawing.Point(170, 390);
+            this.btnCargarRecomendaciones.Name = "btnCargarRecomendaciones";
+            this.btnCargarRecomendaciones.Size = new System.Drawing.Size(150, 30);
+            this.btnCargarRecomendaciones.TabIndex = 1;
+            this.btnCargarRecomendaciones.Text = "Ver recomendaciones";
+            this.btnCargarRecomendaciones.UseVisualStyleBackColor = true;
+            this.btnCargarRecomendaciones.Click += new System.EventHandler(this.btnCargarRecomendaciones_Click);
             // 
             // RecomendacionesForm
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(500, 438);
-            Controls.Add(lstRecomendaciones);
-            Controls.Add(btnCargarRecomendaciones);
-            Margin = new Padding(4, 5, 4, 5);
-            Name = "RecomendacionesForm";
-            Text = "Recomendaciones";
-            ResumeLayout(false);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(484, 441);
+            this.Controls.Add(this.btnCargarRecomendaciones);
+            this.Controls.Add(this.lstRecomendaciones);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.Name = "RecomendacionesForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Recomendaciones personalizadas";
+            this.ResumeLayout(false);
         }
+
+        #endregion
+
+        private System.Windows.Forms.ListBox lstRecomendaciones;
+        private System.Windows.Forms.Button btnCargarRecomendaciones;
     }
 }

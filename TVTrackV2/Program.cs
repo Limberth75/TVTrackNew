@@ -5,19 +5,19 @@ using TVTrackV2.Components;
 using TVTrackV2.Data;
 using TVTrackV2.Services;
 using Microsoft.JSInterop;
-using TVTrackV2;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Añadir los servicios necesarios
-builder.Services.AddRazorPages(); // Para Blazor Server tradicional
-builder.Services.AddControllers(); // Añadir soporte para controladores
+builder.Services.AddRazorComponents()
+                .AddInteractiveServerComponents();
+builder.Services.AddControllers();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<SeedService>();
 
-// Asegúrate de registrar IJSRuntime correctamente
-builder.Services.AddScoped<IJSRuntime, JSRuntime>(); // Esto está bien
+// Agregar SignalR para Blazor Server
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -35,8 +35,8 @@ else
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-// Configurar Blazor para Blazor Server tradicional
-app.MapBlazorHub(); // Usado para Blazor Server tradicional
+// Configuración de Blazor Server tradicional
+app.MapBlazorHub();
 app.MapControllers(); // Mapeo de controladores
 
 app.Run();

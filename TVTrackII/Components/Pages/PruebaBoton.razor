@@ -1,0 +1,19 @@
+﻿@page "/pruebaboton"
+
+<h3>Prueba directa de botón</h3>
+
+<button class="btn btn-primary" @onclick="Probar">Haz clic aquí</button>
+
+@if (!string.IsNullOrEmpty(mensaje))
+{
+    <p style="color: green">@mensaje</p>
+}
+
+@code {
+    private string? mensaje;
+
+    private void Probar()
+    {
+        mensaje = "¡El método se ejecutó correctamente!";
+    }
+}

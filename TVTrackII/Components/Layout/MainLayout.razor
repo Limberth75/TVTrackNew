@@ -1,0 +1,66 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+
+<PageTitle>TVTrackII</PageTitle>
+
+<!-- ADMINISTRADOR -->
+<AuthorizeView Roles="Administrador">
+    <div class="navbar">
+        <span class="title">TVTrackII</span> |
+        <a href="/">Inicio</a> |
+        <a href="/admin">Panel Admin</a> |
+        <a href="/logout">Cerrar sesión</a>
+    </div>
+</AuthorizeView>
+
+<!-- USUARIO -->
+<AuthorizeView Roles="Usuario">
+    <div class="navbar">
+        <span class="title">TVTrackII</span> |
+        <a href="/">Inicio</a> |
+        <a href="/logout">Cerrar sesión</a>
+    </div>
+</AuthorizeView>
+
+<!-- NO AUTENTICADO -->
+<AuthorizeView>
+    <NotAuthorized>
+        <div class="navbar">
+            <span class="title">TVTrackII</span> |
+            <a href="/">Inicio</a> |
+            <a href="/login">Iniciar sesión</a>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
+
+<main>
+    @Body
+</main>
+
+<style>
+    .navbar {
+        background-color: #2c3e50;
+        color: white;
+        padding: 12px;
+        font-size: 18px;
+    }
+
+        .navbar a {
+            color: white;
+            margin-right: 15px;
+            text-decoration: none;
+        }
+
+            .navbar a:hover {
+                text-decoration: underline;
+            }
+
+    .title {
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+    main {
+        padding: 1.5rem;
+    }
+</style>

@@ -1,0 +1,52 @@
+﻿@page "/contenido"
+@attribute [Authorize]
+
+@using TVTrackII.Models
+@using TVTrackII.Services
+@inject ContenidoService ContenidoService
+
+<h3>Listado de Contenidos</h3>
+
+@if (listaContenidos is null)
+{
+    <p>Cargando contenidos...</p>
+}
+else if (listaContenidos.Count == 0)
+{
+    <p>No hay contenidos disponibles.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Género</th>
+                <th>Duración</th>
+                <th>Fecha Estreno</th>
+                <th>Disponible</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in listaContenidos)
+            {
+                <tr>
+                    <td>@c.Titulo</td>
+                    <td>@c.Genero</td>
+                    <td>@c.DuracionMinutos min</td>
+                    <td>@c.FechaEstreno.ToShortDateString()</td>
+                    <td>@(c.Disponible ? "Sí" : "No")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Contenido>? listaContenidos;
+
+    protected override async Task OnInitializedAsync()
+    {
+        listaContenidos = await ContenidoService.ObtenerTodosAsync();
+    }
+}

@@ -1,0 +1,32 @@
+﻿@page "/admin"
+@attribute [Authorize(Roles = "Administrador")]
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<h3>Panel de Administración</h3>
+
+<p>Bienvenido al panel de administración.</p>
+
+<AuthorizeView>
+    <Authorized>
+        <p>Usuario autenticado: @userName</p>
+    </Authorized>
+    <NotAuthorized>
+        <p>No tienes acceso a esta sección.</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private string userName = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity is not null && user.Identity.IsAuthenticated)
+        {
+            userName = user.Identity.Name ?? "(Sin nombre)";
+        }
+    }
+}

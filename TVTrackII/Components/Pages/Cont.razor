@@ -1,23 +1,22 @@
-﻿@page "/contenido"
-@attribute [Authorize]
+﻿@attribute [Authorize]
 
 @using TVTrackII.Models
 @using TVTrackII.Services
 @inject ContenidoService ContenidoService
 
-<h3>Listado de Contenidos</h3>
+<h3 class="contenido-titulo">Listado de Contenidos</h3>
 
 @if (listaContenidos is null)
 {
-    <p>Cargando contenidos...</p>
+    <p class="mensaje-carga">Cargando contenidos...</p>
 }
 else if (listaContenidos.Count == 0)
 {
-    <p>No hay contenidos disponibles.</p>
+    <p class="mensaje-carga">No hay contenidos disponibles.</p>
 }
 else
 {
-    <table class="table table-striped">
+    <table class="contenido-tabla">
         <thead>
             <tr>
                 <th>Título</th>

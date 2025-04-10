@@ -1,0 +1,43 @@
+﻿.registro-titulo {
+    text-align: center;
+    color: #6a0dad;
+    margin-bottom: 1.5rem;
+}
+
+.registro-formulario {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #f8f2fb; 
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(106, 13, 173, 0.1);
+}
+
+.campo-formulario {
+    margin-bottom: 1.2rem;
+}
+
+.input-text {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #c9b5db;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.boton-enviar {
+    width: 100%;
+    padding: 0.6rem;
+    background-color: #6a0dad;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .boton-enviar:hover {
+        background-color: #5a0099;
+    }

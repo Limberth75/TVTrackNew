@@ -1,25 +1,24 @@
-﻿@page "/register"
-@using Microsoft.AspNetCore.Identity
+﻿@using Microsoft.AspNetCore.Identity
 @using TVTrackII.Models
 @using System.ComponentModel.DataAnnotations
 @inject UserManager<ApplicationUser> UserManager
 @inject NavigationManager Navigation
 
-<h3>Registro de usuario</h3>
+<h3 class="registro-titulo">Registro de usuario</h3>
 
-<EditForm Model="@registerModel" OnValidSubmit="HandleRegister" FormName="registerForm">
+<EditForm Model="@registerModel" OnValidSubmit="HandleRegister" FormName="registerForm" class="registro-formulario">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    <div>
+    <div class="campo-formulario">
         <label>Correo electrónico</label><br />
-        <InputText @bind-Value="registerModel.Email" />
+        <InputText @bind-Value="registerModel.Email" class="input-text" />
     </div>
-    <div>
+    <div class="campo-formulario">
         <label>Contraseña</label><br />
-        <InputText @bind-Value="registerModel.Password" type="password" />
+        <InputText @bind-Value="registerModel.Password" type="password" class="input-text" />
     </div>
-    <button type="submit">Registrarse</button>
+    <button type="submit" class="boton-enviar">Registrarse</button>
 </EditForm>
 
 @code {
@@ -44,7 +43,6 @@
             foreach (var error in result.Errors)
             {
                 Console.WriteLine(error.Description);
-                // Aquí podrías mostrar los errores con una lista si deseas
             }
         }
     }

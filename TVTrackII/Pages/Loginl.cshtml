@@ -1,0 +1,23 @@
+﻿@page "/Login"
+@model TVTrackII.Pages.LoginModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<h2>Iniciar Sesión</h2>
+
+@if (!string.IsNullOrEmpty(Model.MensajeError))
+{
+    <p style="color:red">@Model.MensajeError</p>
+}
+
+<form method="post">
+    <div>
+        <label>Correo:</label>
+        <input asp-for="Correo" />
+    </div>
+    <div>
+        <label>Contraseña:</label>
+        <input asp-for="Contrasena" type="password" />
+    </div>
+    <br />
+    <button type="submit">Ingresar</button>
+</form>

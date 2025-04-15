@@ -1,65 +1,94 @@
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
-using TVTrackII.Components;
 using TVTrackII.Data;
 using TVTrackII.Models;
-using TVTrackII.Services; // Asegúrate de tener este using para el ContenidoService
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using System.Linq;
+using Microsoft.AspNetCore.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configurar EF Core con SQL Server
+// Activar Razor Pages y servicios necesarios
+builder.Services.AddRazorPages();
+builder.Services.AddSession();
+builder.Services.AddHttpContextAccessor(); // <- Requerido para usar @inject IHttpContextAccessor
+
+// Conexión a base de datos SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// Configurar Identity con roles
-builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
-{
-    options.SignIn.RequireConfirmedAccount = false;
-})
-.AddRoles<IdentityRole>()
-.AddEntityFrameworkStores<ApplicationDbContext>();
-
-// Razor components y autorización
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
-
-builder.Services.AddAuthorization();
-
-// Registrar servicio de contenidos
-builder.Services.AddScoped<ContenidoService>();
 
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    app.UseHsts();
 }
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-app.UseAuthentication();
+app.UseSession();       // <-- Importante para HttpContext.Session
 app.UseAuthorization();
 
-app.UseAntiforgery();
+app.MapRazorPages();
 
-// Ejecutar seeding de base de datos y contenido de prueba
+// Seeding de datos iniciales (admin + 100 usuarios)
 using (var scope = app.Services.CreateScope())
 {
-    var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<ApplicationDbContext>();
-    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-    var contenidoService = services.GetRequiredService<ContenidoService>();
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-    await DataSeeder.SeedAsync(context, userManager, roleManager);
-    await contenidoService.CrearContenidosFalsosAsync();
+    if (!context.Usuarios.Any(u => u.Nombre == "Admin"))
+    {
+        context.Usuarios.Add(new Usuario
+        {
+            Nombre = "Admin",
+            Correo = "admin@admin.com",
+            Contrasena = "admin",
+            Rol = "Administrador"
+        });
+
+        context.SaveChanges();
+    }
+
+    int cantidadActual = context.Usuarios.Count(u => u.Rol == "Usuario");
+    int cantidadFaltante = 100 - cantidadActual;
+
+    if (cantidadFaltante > 0)
+    {
+        for (int i = cantidadActual + 1; i <= 100; i++)
+        {
+            context.Usuarios.Add(new Usuario
+            {
+                Nombre = $"Usuario{i}",
+                Correo = $"usuario{i}@hotmail.com",
+                Contrasena = "1234",
+                Rol = "Usuario"
+            });
+        }
+
+        context.SaveChanges();
+    }
 }
 
-// Mapear componente principal
-app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+// Página por defecto según sesión
+app.MapGet("/", async context =>
+{
+    var nombreUsuario = context.Session.GetString("NombreUsuario");
+    var rolUsuario = context.Session.GetString("RolUsuario");
+
+    if (!string.IsNullOrEmpty(nombreUsuario) && !string.IsNullOrEmpty(rolUsuario))
+    {
+        context.Response.Redirect("/HomePage");
+    }
+    else
+    {
+        context.Response.Redirect("/Login");
+    }
+
+    await Task.CompletedTask;
+});
 
 app.Run();

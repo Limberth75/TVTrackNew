@@ -1,0 +1,33 @@
+﻿@page "/HomePage"
+@model TVTrackII.Pages.HomePageModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Http
+
+@{
+    Layout = "_Layout";
+}
+
+<div style="max-width: 800px; margin: auto; padding: 40px; font-family: Arial, sans-serif;">
+    <h1 style="color: #2c3e50;">Bienvenido a <span style="color: #2980b9;">TVTrack</span></h1>
+    <p style="font-size: 18px; margin-top: 10px;">
+        Hola <strong>@Model.NombreUsuario</strong>, has iniciado sesión como <strong>@Model.RolUsuario</strong>.
+    </p>
+
+    <hr style="margin: 30px 0; border-color: #ccc;" />
+
+    <h2 style="font-size: 22px; color: #34495e;">Accesos Rápidos</h2>
+
+    <ul style="list-style: none; padding-left: 0; margin-top: 20px;">
+        @if (Model.RolUsuario == "Administrador")
+        {
+            <li><a href="/Usuarios" style="text-decoration: none; color: #2980b9; font-size: 18px;">👥 Gestión de Usuarios</a></li>
+            <li><a href="/Contenido" style="text-decoration: none; color: #2980b9; font-size: 18px;">🎬 Gestión de Contenido</a></li>
+            <li><a href="/Reportes" style="text-decoration: none; color: #2980b9; font-size: 18px;">📊 Reportes</a></li>
+        }
+        else
+        {
+            <li><a href="/Contenido" style="text-decoration: none; color: #2980b9; font-size: 18px;">🎬 Ver Contenido Disponible</a></li>
+            <li><a href="/MiHistorial" style="text-decoration: none; color: #2980b9; font-size: 18px;">🕓 Mi Historial</a></li>
+        }
+    </ul>
+</div>

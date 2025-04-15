@@ -1,0 +1,37 @@
+﻿@page "{id:int}"
+@model TVTrackII.Pages.Usuarios.EditModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<h2>Editar Usuario</h2>
+
+@if (!string.IsNullOrEmpty(Model.MensajeError))
+{
+    <div style="color:red">
+        @Model.MensajeError
+    </div>
+}
+
+<form method="post">
+    <div>
+        <label>Nombre:</label>
+        <input asp-for="Usuario.Nombre" />
+    </div>
+    <div>
+        <label>Correo:</label>
+        <input asp-for="Usuario.Correo" />
+    </div>
+    <div>
+        <label>Contraseña:</label>
+        <input asp-for="Usuario.Contrasena" />
+    </div>
+    <div>
+        <label>Rol:</label>
+        <select asp-for="Usuario.Rol">
+            <option value="Usuario">Usuario</option>
+            <option value="Administrador">Administrador</option>
+        </select>
+    </div>
+    <br />
+    <button type="submit">Guardar</button>
+    <a href="/Usuarios">Cancelar</a>
+</form>

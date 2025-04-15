@@ -1,0 +1,32 @@
+@page
+@model TVTrackII.Pages.Usuarios.IndexModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<h2>Lista de Usuarios</h2>
+
+<p><a href="/Usuarios/Create">Agregar Usuario</a></p>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var usuario in Model.ListaUsuarios)
+        {
+            <tr>
+                <td>@usuario.Nombre</td>
+                <td>@usuario.Correo</td>
+                <td>@usuario.Rol</td>
+                <td>
+                    <a asp-page="Edit" asp-route-id="@usuario.Id">Editar</a> |
+                    <a asp-page="Delete" asp-route-id="@usuario.Id">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

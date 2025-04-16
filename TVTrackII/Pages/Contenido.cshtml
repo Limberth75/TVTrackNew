@@ -1,0 +1,38 @@
+﻿@page
+@model TVTrackII.Pages.ContenidoModel
+@inject IHttpContextAccessor HttpContextAccessor
+@using Microsoft.AspNetCore.Http
+
+<h2>Contenido Disponible</h2>
+
+@if (Model.Contenidos != null && Model.Contenidos.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Género</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Contenidos)
+            {
+                <tr>
+                    <td>@item.Titulo</td>
+                    <td>@item.Genero</td>
+                    <td>
+                        <form method="post" asp-page-handler="Ver">
+                            <input type="hidden" name="idContenido" value="@item.Id" />
+                            <button type="submit" class="btn btn-success">Ver</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No hay contenido disponible.</p>
+}

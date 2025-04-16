@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TVTrackII.Data;
 
@@ -11,9 +12,11 @@ using TVTrackII.Data;
 namespace TVTrackII.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250416043222_AddHistorialVisualizacion")]
+    partial class AddHistorialVisualizacion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,7 +91,7 @@ namespace TVTrackII.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("HistorialVisualizacion");
+                    b.ToTable("Historiales");
                 });
 
             modelBuilder.Entity("TVTrackII.Models.Usuario", b =>
@@ -130,7 +133,7 @@ namespace TVTrackII.Migrations
             modelBuilder.Entity("TVTrackII.Models.HistorialVisualizacion", b =>
                 {
                     b.HasOne("Contenido", "Contenido")
-                        .WithMany("Historiales")
+                        .WithMany()
                         .HasForeignKey("ContenidoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -144,11 +147,6 @@ namespace TVTrackII.Migrations
                     b.Navigation("Contenido");
 
                     b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("Contenido", b =>
-                {
-                    b.Navigation("Historiales");
                 });
 #pragma warning restore 612, 618
         }

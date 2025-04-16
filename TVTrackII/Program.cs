@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,11 +36,12 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 
-// Seeding de datos iniciales (admin + 100 usuarios)
+// Seeding de datos iniciales
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
+    // Crear usuario Admin
     if (!context.Usuarios.Any(u => u.Nombre == "Admin"))
     {
         context.Usuarios.Add(new Usuario
@@ -53,6 +55,7 @@ using (var scope = app.Services.CreateScope())
         context.SaveChanges();
     }
 
+    // Crear hasta 100 usuarios normales
     int cantidadActual = context.Usuarios.Count(u => u.Rol == "Usuario");
     int cantidadFaltante = 100 - cantidadActual;
 
@@ -66,6 +69,25 @@ using (var scope = app.Services.CreateScope())
                 Correo = $"usuario{i}@hotmail.com",
                 Contrasena = "1234",
                 Rol = "Usuario"
+            });
+        }
+
+        context.SaveChanges();
+    }
+
+    // Crear 100 contenidos con géneros aleatorios
+    if (!context.Contenidos.Any())
+    {
+        string[] generos = { "Drama", "Terror", "Ciencia Ficción", "Comedia", "Acción", "Aventura", "Romance", "Documental" };
+        var random = new Random();
+
+        for (int i = 1; i <= 100; i++)
+        {
+            context.Contenidos.Add(new Contenido
+            {
+                Titulo = $"Contenido {i}",
+                Genero = generos[random.Next(generos.Length)],
+                VecesVisto = random.Next(0, 1000)
             });
         }
 

@@ -1,0 +1,20 @@
+﻿@page
+@model TVTrackII.Pages.ReportesModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<h1>Generación de Reportes</h1>
+
+@if (!string.IsNullOrEmpty(Model.MensajeError))
+{
+    <p style="color:red">@Model.MensajeError</p>
+}
+else
+{
+    <form method="post" asp-page-handler="Csv">
+        <button type="submit">Descargar CSV</button>
+    </form>
+
+    <form method="post" asp-page-handler="Pdf">
+        <button type="submit">Descargar PDF</button>
+    </form>
+}

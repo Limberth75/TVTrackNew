@@ -1,8 +1,38 @@
-﻿@page
-@model TVTrackII.Pages.IndexModel
+﻿@page "{idContenido:int}"
+@model TVTrackII.Pages.Comentarios.IndexModel
+@{
+    ViewData["Title"] = "Comentarios";
+}
 
-<h1>Bienvenido a TVTrackII</h1>
+<h2>Comentarios del Contenido</h2>
 
-<p>
-    <a href="/Usuarios">Ir a Gestión de Usuarios</a>
-</p>
+<p><a asp-page="/Contenido">Volver</a></p>
+
+@if (Model.Comentarios.Any())
+{
+    <ul class="list-group">
+        @foreach (var c in Model.Comentarios)
+        {
+            <li class="list-group-item">
+                <strong>@c.UsuarioNombre:</strong> @c.Texto <br />
+                <small>@c.Fecha.ToString("g")</small>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No hay comentarios aún.</p>
+}
+
+<hr />
+
+<h4>Agregar Comentario</h4>
+
+<form method="post">
+    <div class="mb-3">
+        <textarea asp-for="NuevoComentario.Texto" class="form-control" rows="3"></textarea>
+    </div>
+    <input type="hidden" asp-for="NuevoComentario.ContenidoId" />
+    <button type="submit" class="btn btn-primary">Enviar</button>
+</form>

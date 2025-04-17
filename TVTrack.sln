@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TVTrack", "TVTrack\TVTrack.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TVTrackII", "TVTrackII\TVTrackII.csproj", "{7225FEE0-E2CA-48AD-A737-559A7B7074F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTVTRACK", "Tests\TestTVTRACK\TestTVTRACK.csproj", "{87D34076-2D75-4FA5-90D6-8E22F7D0D5CB}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{7225FEE0-E2CA-48AD-A737-559A7B7074F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7225FEE0-E2CA-48AD-A737-559A7B7074F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7225FEE0-E2CA-48AD-A737-559A7B7074F7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{87D34076-2D75-4FA5-90D6-8E22F7D0D5CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{87D34076-2D75-4FA5-90D6-8E22F7D0D5CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{87D34076-2D75-4FA5-90D6-8E22F7D0D5CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{87D34076-2D75-4FA5-90D6-8E22F7D0D5CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

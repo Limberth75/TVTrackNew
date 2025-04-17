@@ -12,7 +12,7 @@ using TVTrackII.Data;
 namespace TVTrackII.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250417025615_AddComentarios")]
+    [Migration("20250417034831_AddComentarios")]
     partial class AddComentarios
     {
         /// <inheritdoc />

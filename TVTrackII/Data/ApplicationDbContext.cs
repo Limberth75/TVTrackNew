@@ -14,6 +14,5 @@ namespace TVTrackII.Data
         public DbSet<HistorialVisualizacion> HistorialVisualizaciones { get; set; }
         public DbSet<HistorialVisualizacion> HistorialVisualizacion { get; set; }
         public DbSet<Comentario> Comentarios { get; set; }
-        
     }
 }

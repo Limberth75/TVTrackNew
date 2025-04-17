@@ -3,30 +3,27 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @using Microsoft.AspNetCore.Http
 
-<h2>Contenido Disponible</h2>
+<h2>Gestión de Contenido</h2>
 
-@if (Model.Contenidos != null && Model.Contenidos.Any())
+@if (HttpContextAccessor.HttpContext?.Session.GetString("RolUsuario") == "Administrador")
 {
-    <table class="table table-bordered">
+    <table class="table table-striped">
         <thead>
             <tr>
+                <th>Usuario</th>
                 <th>Título</th>
                 <th>Género</th>
-                <th>Acción</th>
+                <th>Fecha Visualización</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.Contenidos)
+            @foreach (var item in Model.HistorialAdmin)
             {
                 <tr>
+                    <td>@item.Usuario</td>
                     <td>@item.Titulo</td>
                     <td>@item.Genero</td>
-                    <td>
-                        <form method="post" asp-page-handler="Ver">
-                            <input type="hidden" name="idContenido" value="@item.Id" />
-                            <button type="submit" class="btn btn-success">Ver</button>
-                        </form>
-                    </td>
+                    <td>@item.Fecha.ToString("dd/MM/yyyy HH:mm")</td>
                 </tr>
             }
         </tbody>
@@ -34,5 +31,33 @@
 }
 else
 {
-    <p>No hay contenido disponible.</p>
+    if (Model.Contenidos != null && Model.Contenidos.Any())
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Género</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Contenidos)
+                {
+                    <tr>
+                        <td>@item.Titulo</td>
+                        <td>@item.Genero</td>
+                        <td>
+                            <a href="/Contenido?handler=Ver&idContenido=@item.Id" class="btn btn-primary">Ver</a>
+                            <a href="/Comentarios/@item.Id" class="btn btn-secondary ms-2">Comentarios</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No hay contenido disponible.</p>
+    }
 }

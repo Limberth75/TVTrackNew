@@ -1,11 +1,12 @@
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
-using System.Linq;
-using System;
+using Microsoft.EntityFrameworkCore;
 using TVTrackII.Data;
 using TVTrackII.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace TVTrackII.Pages
 {
@@ -21,39 +22,55 @@ namespace TVTrackII.Pages
         }
 
         public List<Contenido> Contenidos { get; set; } = new();
+        public List<HistorialVistaDTO> HistorialAdmin { get; set; } = new();
 
         public void OnGet()
         {
             var rol = _httpContextAccessor.HttpContext?.Session.GetString("RolUsuario");
             var nombre = _httpContextAccessor.HttpContext?.Session.GetString("NombreUsuario");
 
-            if (string.IsNullOrEmpty(rol) || string.IsNullOrEmpty(nombre))
-            {
-                Contenidos = new List<Contenido>();
-                return;
-            }
-
             if (rol == "Administrador")
             {
-                Contenidos = _context.Contenidos.ToList();
+                HistorialAdmin = _context.HistorialVisualizacion
+                    .Include(h => h.Usuario)
+                    .Include(h => h.Contenido)
+                    .Select(h => new HistorialVistaDTO
+                    {
+                        Usuario = h.Usuario.Nombre,
+                        Titulo = h.Contenido.Titulo,
+                        Genero = h.Contenido.Genero,
+                        Fecha = h.FechaVisualizacion
+                    })
+                    .ToList();
             }
-            else
+            else if (rol == "Usuario")
             {
-                Contenidos = _context.Contenidos.ToList(); // Mostrar todos
+                var usuario = _context.Usuarios.FirstOrDefault(u => u.Nombre == nombre);
+                if (usuario != null)
+                {
+                    var vistos = _context.HistorialVisualizacion
+                        .Where(h => h.UsuarioId == usuario.Id)
+                        .Select(h => h.ContenidoId)
+                        .ToList();
+
+                    Contenidos = _context.Contenidos
+                        .Where(c => !vistos.Contains(c.Id))
+                        .ToList();
+                }
             }
         }
 
-        public IActionResult OnPostVer(int idContenido)
+        public IActionResult OnGetVer(int idContenido)
         {
             var nombre = _httpContextAccessor.HttpContext?.Session.GetString("NombreUsuario");
             var usuario = _context.Usuarios.FirstOrDefault(u => u.Nombre == nombre);
 
             if (usuario != null)
             {
-                bool yaRegistrado = _context.HistorialVisualizacion
+                bool yaVisto = _context.HistorialVisualizacion
                     .Any(h => h.UsuarioId == usuario.Id && h.ContenidoId == idContenido);
 
-                if (!yaRegistrado)
+                if (!yaVisto)
                 {
                     _context.HistorialVisualizacion.Add(new HistorialVisualizacion
                     {
@@ -66,7 +83,15 @@ namespace TVTrackII.Pages
                 }
             }
 
-            return RedirectToPage(); // recarga Contenido.cshtml
+            return RedirectToPage(); // Redirige de vuelta a /Contenido
+        }
+
+        public class HistorialVistaDTO
+        {
+            public string Usuario { get; set; }
+            public string Titulo { get; set; }
+            public string Genero { get; set; }
+            public DateTime Fecha { get; set; }
         }
     }
 }

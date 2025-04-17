@@ -1,0 +1,33 @@
+﻿@page "/MiHistorial"
+@using Microsoft.AspNetCore.Http
+@model TVTrackII.Pages.MiHistorialModel
+@inject IHttpContextAccessor HttpContextAccessor
+
+<h2>Mi Historial de Visualización</h2>
+
+@if (Model.Contenidos != null && Model.Contenidos.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Género</th>
+                <th>Fecha de Visualización</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Contenidos)
+            {
+                <tr>
+                    <td>@item.Titulo</td>
+                    <td>@item.Genero</td>
+                    <td>@item.Fecha</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No has visto ningún contenido aún.</p>
+}

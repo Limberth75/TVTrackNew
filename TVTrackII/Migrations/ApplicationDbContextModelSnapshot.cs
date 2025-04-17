@@ -65,6 +65,35 @@ namespace TVTrackII.Migrations
                     b.ToTable("Calificaciones");
                 });
 
+            modelBuilder.Entity("TVTrackII.Models.Comentario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ContenidoId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Texto")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContenidoId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("Comentarios");
+                });
+
             modelBuilder.Entity("TVTrackII.Models.HistorialVisualizacion", b =>
                 {
                     b.Property<int>("Id")
@@ -125,6 +154,25 @@ namespace TVTrackII.Migrations
                         .IsRequired();
 
                     b.Navigation("Contenido");
+                });
+
+            modelBuilder.Entity("TVTrackII.Models.Comentario", b =>
+                {
+                    b.HasOne("Contenido", "Contenido")
+                        .WithMany()
+                        .HasForeignKey("ContenidoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TVTrackII.Models.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Contenido");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("TVTrackII.Models.HistorialVisualizacion", b =>

@@ -1,20 +1,29 @@
 ﻿@page
 @model TVTrackII.Pages.ReportesModel
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Reportes del Sistema";
+}
 
-<h1>Generación de Reportes</h1>
+<h2 class="mb-4">Generación de Reportes</h2>
 
 @if (!string.IsNullOrEmpty(Model.MensajeError))
 {
-    <p style="color:red">@Model.MensajeError</p>
+    <div class="alert alert-danger">
+        @Model.MensajeError
+    </div>
 }
 else
 {
-    <form method="post" asp-page-handler="Csv">
-        <button type="submit">Descargar CSV</button>
-    </form>
+    <div class="mb-4">
+        <p>Seleccione el formato en el que desea descargar el reporte del sistema:</p>
 
-    <form method="post" asp-page-handler="Pdf">
-        <button type="submit">Descargar PDF</button>
-    </form>
+        <div class="d-flex gap-3">
+            <a class="btn btn-outline-success" href="/Reportes?handler=Csv">Descargar CSV</a>
+            <a class="btn btn-outline-danger" href="/Reportes?handler=Pdf">Descargar PDF (HTML simulado)</a>
+        </div>
+    </div>
+
+    <div class="alert alert-info mt-4">
+        Los reportes incluyen información de <strong>usuarios registrados</strong> y <strong>contenido disponible</strong> en el sistema.
+    </div>
 }

@@ -2,31 +2,48 @@
 @model TVTrackII.Pages.Usuarios.IndexModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-<h2>Lista de Usuarios</h2>
+@{
+    ViewData["Title"] = "Gestión de Usuarios";
+}
 
-<p><a href="/Usuarios/Create">Agregar Usuario</a></p>
+<h2 class="mb-4">Gestión de Usuarios</h2>
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Correo</th>
-            <th>Rol</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var usuario in Model.ListaUsuarios)
-        {
-            <tr>
-                <td>@usuario.Nombre</td>
-                <td>@usuario.Correo</td>
-                <td>@usuario.Rol</td>
-                <td>
-                    <a asp-page="Edit" asp-route-id="@usuario.Id">Editar</a> |
-                    <a asp-page="Delete" asp-route-id="@usuario.Id">Eliminar</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="mb-3">
+    <a class="btn btn-primary" href="/Usuarios/Create">Agregar Usuario</a>
+</div>
+
+@if (Model.ListaUsuarios != null && Model.ListaUsuarios.Any())
+{
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Rol</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var usuario in Model.ListaUsuarios)
+                {
+                    <tr>
+                        <td>@usuario.Nombre</td>
+                        <td>@usuario.Correo</td>
+                        <td>@usuario.Rol</td>
+                        <td class="text-center">
+                            <a class="btn btn-sm btn-outline-warning me-2" asp-page="Edit" asp-route-id="@usuario.Id">Editar</a>
+                            <a class="btn btn-sm btn-outline-danger" asp-page="Delete" asp-route-id="@usuario.Id">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        No hay usuarios registrados.
+    </div>
+}

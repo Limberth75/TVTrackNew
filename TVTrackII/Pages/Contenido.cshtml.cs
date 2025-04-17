@@ -31,16 +31,8 @@ namespace TVTrackII.Pages
 
             if (rol == "Administrador")
             {
-                HistorialAdmin = _context.HistorialVisualizacion
-                    .Include(h => h.Usuario)
-                    .Include(h => h.Contenido)
-                    .Select(h => new HistorialVistaDTO
-                    {
-                        Usuario = h.Usuario.Nombre,
-                        Titulo = h.Contenido.Titulo,
-                        Genero = h.Contenido.Genero,
-                        Fecha = h.FechaVisualizacion
-                    })
+                Contenidos = _context.Contenidos
+                    .OrderBy(c => c.Titulo)
                     .ToList();
             }
             else if (rol == "Usuario")
@@ -67,30 +59,40 @@ namespace TVTrackII.Pages
 
             if (usuario != null)
             {
+                // Verificar si ya lo vio
                 bool yaVisto = _context.HistorialVisualizacion
                     .Any(h => h.UsuarioId == usuario.Id && h.ContenidoId == idContenido);
 
                 if (!yaVisto)
                 {
+                    // Registrar visualización
                     _context.HistorialVisualizacion.Add(new HistorialVisualizacion
                     {
                         UsuarioId = usuario.Id,
                         ContenidoId = idContenido,
-                        FechaVisualizacion = DateTime.Now
+                        Fecha = DateTime.Now
                     });
+
+                    // Incrementar VecesVisto
+                    var contenido = _context.Contenidos.FirstOrDefault(c => c.Id == idContenido);
+                    if (contenido != null)
+                    {
+                        contenido.VecesVisto += 1;
+                        _context.Contenidos.Update(contenido);
+                    }
 
                     _context.SaveChanges();
                 }
             }
 
-            return RedirectToPage(); // Redirige de vuelta a /Contenido
+            return RedirectToPage();
         }
 
         public class HistorialVistaDTO
         {
-            public string Usuario { get; set; }
-            public string Titulo { get; set; }
-            public string Genero { get; set; }
+            public string Usuario { get; set; } = string.Empty;
+            public string Titulo { get; set; } = string.Empty;
+            public string Genero { get; set; } = string.Empty;
             public DateTime Fecha { get; set; }
         }
     }

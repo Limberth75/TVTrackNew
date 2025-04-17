@@ -9,17 +9,26 @@ namespace TVTrackII.Models
         public int Id { get; set; }
 
         [Required]
+        public int UsuarioId { get; set; }
+
+        [Required]
+        public int ContenidoId { get; set; }
+
+        [Required]
+        [StringLength(300)]
         public string Texto { get; set; } = string.Empty;
 
         public DateTime Fecha { get; set; } = DateTime.Now;
 
         // Relaciones
-        [ForeignKey("Usuario")]
-        public int UsuarioId { get; set; }
-        public Usuario Usuario { get; set; }
+        [ForeignKey("UsuarioId")]
+        public Usuario? Usuario { get; set; }
 
-        [ForeignKey("Contenido")]
-        public int ContenidoId { get; set; }
-        public Contenido Contenido { get; set; }
+        [ForeignKey("ContenidoId")]
+        public Contenido? Contenido { get; set; }
+
+        // Propiedad auxiliar para mostrar el nombre del usuario
+        [NotMapped]
+        public string UsuarioNombre => Usuario?.Nombre ?? "Desconocido";
     }
 }

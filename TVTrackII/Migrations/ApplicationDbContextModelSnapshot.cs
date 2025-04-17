@@ -80,7 +80,9 @@ namespace TVTrackII.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Texto")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
@@ -105,7 +107,7 @@ namespace TVTrackII.Migrations
                     b.Property<int>("ContenidoId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("FechaVisualizacion")
+                    b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("UsuarioId")

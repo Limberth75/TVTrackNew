@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Http; 
+using Microsoft.EntityFrameworkCore;
 using TVTrackII.Data;
 using TVTrackII.Models;
-using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Linq;
-using System;
 
 namespace TVTrackII.Pages
 {
@@ -19,35 +19,20 @@ namespace TVTrackII.Pages
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public List<ContenidoConFecha> Contenidos { get; set; } = new();
+        public List<HistorialVisualizacion> Contenidos { get; set; } = new();
 
         public void OnGet()
         {
             var nombreUsuario = _httpContextAccessor.HttpContext?.Session.GetString("NombreUsuario");
-
-            if (string.IsNullOrEmpty(nombreUsuario)) return;
-
             var usuario = _context.Usuarios.FirstOrDefault(u => u.Nombre == nombreUsuario);
 
-            if (usuario != null)
-            {
-                Contenidos = _context.HistorialVisualizacion
-                    .Where(h => h.UsuarioId == usuario.Id)
-                    .OrderByDescending(h => h.FechaVisualizacion)
-                    .Select(h => new ContenidoConFecha
-                    {
-                        Titulo = h.Contenido.Titulo,
-                        Genero = h.Contenido.Genero,
-                        Fecha = h.FechaVisualizacion
-                    }).ToList();
-            }
-        }
+            if (usuario == null) return;
 
-        public class ContenidoConFecha
-        {
-            public string Titulo { get; set; }
-            public string Genero { get; set; }
-            public DateTime Fecha { get; set; }
+            Contenidos = _context.HistorialVisualizaciones
+                .Include(h => h.Contenido)
+                .Where(h => h.UsuarioId == usuario.Id)
+                .OrderByDescending(h => h.Fecha)
+                .ToList();
         }
     }
 }

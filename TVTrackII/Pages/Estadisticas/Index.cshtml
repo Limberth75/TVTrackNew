@@ -1,0 +1,49 @@
+﻿@page
+@model TVTrackII.Pages.Estadisticas.IndexModel
+@{
+    ViewData["Title"] = "Estadísticas";
+}
+
+<h2>Top 5 Contenidos Más Vistos</h2>
+
+<canvas id="graficoVistas" width="600" height="300"></canvas>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const nombres = @Html.Raw(Model.JsonNombresContenidos);
+        const cantidades = @Html.Raw(Model.JsonCantidades);
+
+        if (nombres.length === 0 || cantidades.length === 0) {
+            document.getElementById('graficoVistas').style.display = 'none';
+
+            const mensaje = document.createElement('p');
+            mensaje.textContent = "Aún no hay contenido visualizado para mostrar estadísticas.";
+            mensaje.style.fontSize = "1.2rem";
+            mensaje.style.color = "gray";
+            mensaje.style.marginTop = "20px";
+            document.querySelector('body').appendChild(mensaje);
+        } else {
+            const ctx = document.getElementById('graficoVistas').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: nombres,
+                    datasets: [{
+                        label: 'Veces visto',
+                        data: cantidades,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+}

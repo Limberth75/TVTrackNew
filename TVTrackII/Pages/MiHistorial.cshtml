@@ -1,7 +1,6 @@
 ﻿@page "/MiHistorial"
-@using Microsoft.AspNetCore.Http
 @model TVTrackII.Pages.MiHistorialModel
-@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 <h2>Mi Historial de Visualización</h2>
 
@@ -19,9 +18,9 @@
             @foreach (var item in Model.Contenidos)
             {
                 <tr>
-                    <td>@item.Titulo</td>
-                    <td>@item.Genero</td>
-                    <td>@item.Fecha</td>
+                    <td>@item.Contenido?.Titulo</td>
+                    <td>@item.Contenido?.Genero</td>
+                    <td>@item.Fecha.ToString("g")</td>
                 </tr>
             }
         </tbody>

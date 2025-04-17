@@ -1,9 +1,8 @@
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Http;
 using TVTrackII.Data;
-using TVTrackII.Models;
+using System.Linq;
+using Microsoft.AspNetCore.Http;
 
 namespace TVTrackII.Pages
 {
@@ -17,17 +16,28 @@ namespace TVTrackII.Pages
         }
 
         [BindProperty]
-        public string Correo { get; set; } = string.Empty;
+        public string Correo { get; set; }
 
         [BindProperty]
-        public string Contrasena { get; set; } = string.Empty;
+        public string Contrasena { get; set; }
 
-        public string MensajeError { get; set; } = string.Empty;
+        public string MensajeError { get; set; }
+
+        public void OnGet()
+        {
+            // limpia sesión
+            HttpContext.Session.Clear();
+        }
 
         public IActionResult OnPost()
         {
-            var usuario = _context.Usuarios
-                .FirstOrDefault(u => u.Correo == Correo && u.Contrasena == Contrasena);
+            if (string.IsNullOrEmpty(Correo) || string.IsNullOrEmpty(Contrasena))
+            {
+                MensajeError = "Por favor ingresa ambos campos.";
+                return Page();
+            }
+
+            var usuario = _context.Usuarios.FirstOrDefault(u => u.Correo == Correo && u.Contrasena == Contrasena);
 
             if (usuario == null)
             {
@@ -35,11 +45,9 @@ namespace TVTrackII.Pages
                 return Page();
             }
 
-            // Guardar en sesión
             HttpContext.Session.SetString("NombreUsuario", usuario.Nombre);
             HttpContext.Session.SetString("RolUsuario", usuario.Rol);
 
-            // Redirigir a HomePage (ya no directamente a Usuarios)
             return RedirectToPage("/HomePage");
         }
     }

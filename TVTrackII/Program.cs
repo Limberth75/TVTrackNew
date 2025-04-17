@@ -31,7 +31,7 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseRouting();
 
-app.UseSession();       // <-- Importante para HttpContext.Session
+app.UseSession();       // -- Importante para HttpContext.Session
 app.UseAuthorization();
 
 app.MapRazorPages();

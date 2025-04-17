@@ -5,25 +5,27 @@
 
 <h2>Gestión de Contenido</h2>
 
+<p>
+    <a class="btn btn-secondary" href="/HomePage">Volver al Inicio</a>
+</p>
+
 @if (HttpContextAccessor.HttpContext?.Session.GetString("RolUsuario") == "Administrador")
 {
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Usuario</th>
                 <th>Título</th>
                 <th>Género</th>
-                <th>Fecha Visualización</th>
+                <th>Veces Visto</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.HistorialAdmin)
+            @foreach (var item in Model.Contenidos)
             {
                 <tr>
-                    <td>@item.Usuario</td>
                     <td>@item.Titulo</td>
                     <td>@item.Genero</td>
-                    <td>@item.Fecha.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>@item.VecesVisto</td>
                 </tr>
             }
         </tbody>
@@ -38,7 +40,7 @@ else
                 <tr>
                     <th>Título</th>
                     <th>Género</th>
-                    <th>Acciones</th>
+                    <th>Acción</th>
                 </tr>
             </thead>
             <tbody>
@@ -49,7 +51,6 @@ else
                         <td>@item.Genero</td>
                         <td>
                             <a href="/Contenido?handler=Ver&idContenido=@item.Id" class="btn btn-primary">Ver</a>
-                            <a href="/Comentarios/@item.Id" class="btn btn-secondary ms-2">Comentarios</a>
                         </td>
                     </tr>
                 }

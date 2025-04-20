@@ -1,26 +1,26 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TVTrackII.Models; 
+using TVTrackII.Models;
 
 namespace TestTVTrackII
 {
     [TestClass]
-    public class ComentarioTests
+    public class IndexTest
     {
         [TestMethod]
-        public void BotonEnviar_Habilitado_Si_Comentario_Es_Valido()
+        public void Verifica_Si_Comentario_Es_Valido()
         {
-            // Arrange: Crear un comentario simulado
-            var comentario = new Comentarios
+            // Arrange
+            var comentario = new Comentario
             {
-                Texto = "Muy interesante este contenido",
-                ContenidoId = 1 // Supongamos que este ID representa un contenido existente
+                Texto = "Buen contenido",
+                ContenidoId = 5
             };
 
-            // Act: Validar si los campos necesarios están completos
+            // Act
             var esValido = !string.IsNullOrWhiteSpace(comentario.Texto) && comentario.ContenidoId > 0;
 
-            // Assert: Se espera que el comentario sea válido
-            Assert.IsTrue(esValido, "El botón 'Enviar' debería estar habilitado si el comentario tiene texto y un ContenidoId válido.");
+            // Assert
+            Assert.IsTrue(esValido, "El comentario debería considerarse válido si tiene texto y un ContenidoId válido.");
         }
     }
 }

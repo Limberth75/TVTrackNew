@@ -1,0 +1,36 @@
+﻿@page
+@model TVTrackII.Pages.Admin.ComentariosModel
+@{
+    ViewData["Title"] = "Comentarios del Sistema";
+}
+
+<h2>Comentarios registrados en el sistema</h2>
+
+@if (Model.Comentarios.Any())
+{
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Contenido</th>
+                <th>Usuario</th>
+                <th>Comentario</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in Model.Comentarios)
+            {
+                <tr>
+                    <td>@c.Contenido</td>
+                    <td>@c.Usuario</td>
+                    <td>@c.Texto</td>
+                    <td>@c.Fecha.ToString("g")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No hay comentarios registrados.</p>
+}

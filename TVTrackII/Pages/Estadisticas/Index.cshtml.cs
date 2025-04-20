@@ -23,16 +23,16 @@ namespace TVTrackII.Pages.Estadisticas
 
         public void OnGet()
         {
-            var topContenidos = _context.HistorialVisualizaciones
-                .Include(h => h.Contenido)
-                .GroupBy(h => h.ContenidoId)
-                .Select(g => new
-                {
-                    Nombre = g.First().Contenido.Titulo,
-                    Veces = g.Count()
-                })
-                .OrderByDescending(g => g.Veces)
+            // Usamos directamente la tabla Contenidos y su propiedad VecesVisto
+            var topContenidos = _context.Contenidos
+                .Where(c => c.VecesVisto > 0)
+                .OrderByDescending(c => c.VecesVisto)
                 .Take(5)
+                .Select(c => new
+                {
+                    Nombre = c.Titulo,
+                    Veces = c.VecesVisto
+                })
                 .ToList();
 
             var nombres = topContenidos.Select(c => c.Nombre).ToList();

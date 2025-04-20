@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TVTrackII.Models
 {
@@ -15,20 +14,13 @@ namespace TVTrackII.Models
         public int ContenidoId { get; set; }
 
         [Required]
-        [StringLength(300)]
+        [StringLength(500)]
         public string Texto { get; set; } = string.Empty;
 
         public DateTime Fecha { get; set; } = DateTime.Now;
 
         // Relaciones
-        [ForeignKey("UsuarioId")]
-        public Usuario? Usuario { get; set; }
-
-        [ForeignKey("ContenidoId")]
-        public Contenido? Contenido { get; set; }
-
-        // Propiedad auxiliar para mostrar el nombre del usuario
-        [NotMapped]
-        public string UsuarioNombre => Usuario?.Nombre ?? "Desconocido";
+        public Usuario Usuario { get; set; } = null!;
+        public Contenido Contenido { get; set; } = null!;
     }
 }

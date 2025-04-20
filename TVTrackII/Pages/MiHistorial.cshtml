@@ -12,6 +12,7 @@
                 <th>Título</th>
                 <th>Género</th>
                 <th>Fecha de Visualización</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -21,6 +22,9 @@
                     <td>@item.Contenido?.Titulo</td>
                     <td>@item.Contenido?.Genero</td>
                     <td>@item.Fecha.ToString("g")</td>
+                    <td>
+                        <a href="/Comentarios/@item.ContenidoId" class="btn btn-sm btn-outline-primary">Comentarios</a>
+                    </td>
                 </tr>
             }
         </tbody>

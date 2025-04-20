@@ -1,0 +1,37 @@
+﻿@page
+@model TVTrackII.Pages.Recomendaciones.IndexModel
+@{
+    ViewData["Title"] = "Recomendaciones";
+}
+
+<h2>Recomendaciones Personalizadas</h2>
+
+@if (Model.Recomendaciones.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Género</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Recomendaciones)
+            {
+                <tr>
+                    <td>@item.Titulo</td>
+                    <td>@item.Genero</td>
+                    <td>
+                        <a asp-page="/Contenido" asp-page-handler="Ver" asp-route-id="@item.Id" class="btn btn-sm btn-success">Ver</a>
+                        <a href="/Comentarios/@item.Id" class="btn btn-sm btn-outline-primary">Comentarios</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No hay recomendaciones disponibles en este momento.</p>
+}

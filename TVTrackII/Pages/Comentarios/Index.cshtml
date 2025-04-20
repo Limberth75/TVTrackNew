@@ -1,0 +1,51 @@
+﻿@page "{id:int}"
+@model TVTrackII.Pages.Comentarios.ComentariosIndexModel
+@{
+    ViewData["Title"] = "Comentarios";
+}
+
+<h2>Comentarios sobre: @Model.TituloContenido</h2>
+
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-warning">@Model.Mensaje</div>
+}
+
+@if (Model.EstaAutorizado)
+{
+    <form method="get">
+        <div class="mb-3">
+            <label for="comentarioTexto">Agregar Comentario:</label>
+            <input type="text" name="comentarioTexto" class="form-control" required />
+            <input type="hidden" name="handler" value="Agregar" />
+            <input type="hidden" name="id" value="@Model.id" />
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
+}
+else
+{
+    <p class="text-danger">Solo puedes comentar si ya has visto este contenido.</p>
+}
+
+<hr />
+
+<h4>Comentarios previos:</h4>
+@if (Model.Comentarios.Any())
+{
+    <ul class="list-group">
+        @foreach (var c in Model.Comentarios)
+        {
+            <li class="list-group-item">
+                <strong>@c.Usuario:</strong> @c.Texto <br />
+                <small class="text-muted">@c.Fecha.ToString("g")</small>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No hay comentarios todavía.</p>
+}
+
+<a href="/MiHistorial" class="btn btn-secondary mt-3">Volver</a>

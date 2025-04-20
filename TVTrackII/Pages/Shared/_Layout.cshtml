@@ -42,7 +42,7 @@
         .content {
             margin-left: 240px;
             padding: 20px;
-            background-color: rgba(255, 255, 255, 0.85); /* Semitransparente para mayor legibilidad */
+            background-color: rgba(255, 255, 255, 0.85);
             min-height: 100vh;
         }
 
@@ -71,14 +71,15 @@
         {
             <a href="/Usuarios">Gestión de Usuarios</a>
             <a href="/Reportes">Reportes</a>
-            <a href="/Estadisticas">Estadísticas</a> <!-- ✅ Agregado correctamente -->
+            <a href="/Estadisticas">Estadísticas</a>
+            <a href="/Admin/Comentarios">Comentarios del Sistema</a>
         }
-
-        <a href="/Contenido">Gestión de Contenido</a>
 
         @if (HttpContextAccessor.HttpContext?.Session.GetString("RolUsuario") == "Usuario")
         {
+            <a href="/Contenido">Ver Contenido</a>
             <a href="/MiHistorial">Mi Historial</a>
+            <a href="/Recomendaciones">Recomendaciones</a>
         }
 
         <a href="/Login">Cerrar Sesión</a>

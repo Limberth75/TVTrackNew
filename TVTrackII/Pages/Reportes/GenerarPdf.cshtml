@@ -1,0 +1,11 @@
+﻿@page
+@model TVTrackII.Pages.Reportes.GenerarPdfModel
+@{
+    ViewData["Title"] = "Generar PDF";
+}
+
+<h2>Reporte PDF</h2>
+
+<p>Haz clic en el botón para descargar el archivo PDF generado:</p>
+
+<a asp-page-handler="Descargar" class="btn btn-primary">Descargar PDF</a>

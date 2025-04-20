@@ -4,18 +4,34 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using TVTrackII.Data;
 using TVTrackII.Models;
+using TVTrackII.Services;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Runtime.Loader;
+using System.Runtime.InteropServices;
+using System.IO;
+
+// PDF
+using DinkToPdf;
+using DinkToPdf.Contracts;
+
+// Cargar manualmente la DLL nativa de wkhtmltopdf
+var wkhtmlPath = Path.Combine(Directory.GetCurrentDirectory(), "Wkhtmltopdf", "libwkhtmltox.dll");
+CustomAssemblyLoadContext context = new();
+context.LoadUnmanagedLibrary(wkhtmlPath);
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Activar Razor Pages y servicios necesarios
 builder.Services.AddRazorPages();
 builder.Services.AddSession();
-builder.Services.AddHttpContextAccessor(); // <- Requerido para usar @inject IHttpContextAccessor
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<RecomendacionService>();
+builder.Services.AddScoped<ReportePdfService>();
+builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools())); // PDF
 
 // Conexión a base de datos SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -31,20 +47,19 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseRouting();
 
-app.UseSession();       // -- Importante para HttpContext.Session
+app.UseSession();
 app.UseAuthorization();
 
 app.MapRazorPages();
 
-// Seeding de datos iniciales
+// Seeder inicial
 using (var scope = app.Services.CreateScope())
 {
-    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var contextDb = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-    // Crear usuario Admin
-    if (!context.Usuarios.Any(u => u.Nombre == "Admin"))
+    if (!contextDb.Usuarios.Any(u => u.Nombre == "Admin"))
     {
-        context.Usuarios.Add(new Usuario
+        contextDb.Usuarios.Add(new Usuario
         {
             Nombre = "Admin",
             Correo = "admin@admin.com",
@@ -52,18 +67,17 @@ using (var scope = app.Services.CreateScope())
             Rol = "Administrador"
         });
 
-        context.SaveChanges();
+        contextDb.SaveChanges();
     }
 
-    // Crear hasta 100 usuarios normales
-    int cantidadActual = context.Usuarios.Count(u => u.Rol == "Usuario");
+    int cantidadActual = contextDb.Usuarios.Count(u => u.Rol == "Usuario");
     int cantidadFaltante = 100 - cantidadActual;
 
     if (cantidadFaltante > 0)
     {
         for (int i = cantidadActual + 1; i <= 100; i++)
         {
-            context.Usuarios.Add(new Usuario
+            contextDb.Usuarios.Add(new Usuario
             {
                 Nombre = $"Usuario{i}",
                 Correo = $"usuario{i}@hotmail.com",
@@ -72,18 +86,17 @@ using (var scope = app.Services.CreateScope())
             });
         }
 
-        context.SaveChanges();
+        contextDb.SaveChanges();
     }
 
-    // Crear 100 contenidos con géneros aleatorios
-    if (!context.Contenidos.Any())
+    if (!contextDb.Contenidos.Any())
     {
         string[] generos = { "Drama", "Terror", "Ciencia Ficción", "Comedia", "Acción", "Aventura", "Romance", "Documental" };
         var random = new Random();
 
         for (int i = 1; i <= 100; i++)
         {
-            context.Contenidos.Add(new Contenido
+            contextDb.Contenidos.Add(new Contenido
             {
                 Titulo = $"Contenido {i}",
                 Genero = generos[random.Next(generos.Length)],
@@ -91,11 +104,11 @@ using (var scope = app.Services.CreateScope())
             });
         }
 
-        context.SaveChanges();
+        contextDb.SaveChanges();
     }
 }
 
-// Página por defecto según sesión
+// Página por defecto
 app.MapGet("/", async context =>
 {
     var nombreUsuario = context.Session.GetString("NombreUsuario");
@@ -114,3 +127,19 @@ app.MapGet("/", async context =>
 });
 
 app.Run();
+
+// Clase necesaria para cargar libwkhtmltox.dll manualmente
+public class CustomAssemblyLoadContext : AssemblyLoadContext
+{
+    public CustomAssemblyLoadContext() : base(true) { }
+
+    public IntPtr LoadUnmanagedLibrary(string absolutePath)
+    {
+        return LoadUnmanagedDllFromPath(absolutePath);
+    }
+
+    protected override IntPtr LoadUnmanagedDll(string unmanagedDllName)
+    {
+        return IntPtr.Zero;
+    }
+}

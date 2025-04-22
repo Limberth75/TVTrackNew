@@ -21,7 +21,9 @@ namespace TVTrackII.Pages
             _httpContextAccessor = httpContextAccessor;
         }
 
+        // Lista que contiene los contenidos disponibles para mostrar
         public List<Contenido> Contenidos { get; set; } = new();
+        // DTO en caso de uso futuro de reportes
         public List<HistorialVistaDTO> HistorialAdmin { get; set; } = new();
 
         public void OnGet()
@@ -35,7 +37,7 @@ namespace TVTrackII.Pages
                     .OrderBy(c => c.Titulo)
                     .ToList();
             }
-            else if (rol == "Usuario")
+            else if (rol == "Usuario")  // Usuario va a ver solo lo que aún no ha visto
             {
                 var usuario = _context.Usuarios.FirstOrDefault(u => u.Nombre == nombre);
                 if (usuario != null)

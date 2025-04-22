@@ -43,11 +43,11 @@
     <div class="login-container">
         <h2>Bienvenido a <span class="text-primary">TVTrack</span></h2>
 
-        @if (!string.IsNullOrEmpty(Model.MensajeError))
+        @if (!string.IsNullOrEmpty(Model.MensajeError))  @* Mensaje de error si las credenciales estan mal *@
         {
             <div class="alert alert-danger">@Model.MensajeError</div>
         }
-
+        @* Formulario de inicio de sesión *@
         <form method="post">
             <div class="mb-3">
                 <label class="form-label">Correo:</label>

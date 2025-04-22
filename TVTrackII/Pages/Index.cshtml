@@ -8,7 +8,7 @@
 
 <p><a asp-page="/Contenido">Volver</a></p>
 
-@if (Model.Comentarios.Any())
+@if (Model.Comentarios.Any())  @* Muestra los comentarios existentes si hay alguno *@
 {
     <ul class="list-group">
         @foreach (var c in Model.Comentarios)
@@ -22,14 +22,14 @@
 }
 else
 {
-    <p>No hay comentarios aún.</p>
+    <p>No hay comentarios aún.</p> @*Solo cuando no hay comentarios registrados *@
 }
 
 <hr />
 
 <h4>Agregar Comentario</h4>
 
-<form method="post">
+<form method="post">   @* Agrega un nuevo comentario al contenido *@
     <div class="mb-3">
         <textarea asp-for="NuevoComentario.Texto" class="form-control" rows="3"></textarea>
     </div>

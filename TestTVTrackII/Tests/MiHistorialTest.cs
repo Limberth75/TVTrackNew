@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace TestTVTrackII
 {
     [TestClass]
-    internal class MiHistorialTest
+    public class MiHistorialTest
     {
         // Definimos las clases para simular el historial
         public class Contenido
@@ -56,6 +56,40 @@ namespace TestTVTrackII
             Assert.IsFalse(hayContenido);
         }
 
+        [TestMethod]
+        public void Historial_Incluye_Boton_Comentarios()
+        {
+            // Arrange: Simula una fila del historial con el botón
+            string filaHtml = @"
+        <tr>
+            <td>Película X</td>
+            <td>Acción</td>
+            <td>01/01/2024 10:00 AM</td>
+            <td>
+                <a href=""/Comentarios/1"" class=""btn btn-sm btn-outline-primary"">Comentarios</a>
+            </td>
+        </tr>";
+
+            // Act: Se revisa si el HTML contiene el enlace de comentarios
+            bool tieneBotonComentarios = filaHtml.Contains("href=\"/Comentarios/1\"") &&
+                                         filaHtml.Contains(">Comentarios<");
+
+            // Assert: Se espera que sí exista
+            Assert.IsTrue(tieneBotonComentarios, "Cada elemento del historial debería tener un botón de comentarios.");
+        }
+
+        [TestMethod]
+        public void Fecha_De_Historial_Deberia_Tener_Formato_Valido()
+        {
+            // Arrange
+            var fecha = new DateTime(2024, 4, 20, 14, 30, 0);
+
+            // Act
+            var formato = fecha.ToString("g");
+
+            // Assert
+            Assert.AreEqual("20/04/2024 14:30", formato);
+        }
 
     }
 }

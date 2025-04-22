@@ -12,7 +12,7 @@ namespace TVTrackII.Pages
         {
             var nombre = HttpContext.Session.GetString("NombreUsuario");
 
-            if (string.IsNullOrEmpty(nombre))
+            if (string.IsNullOrEmpty(nombre))   // Si no hay sesión activa, vuelve al Login
             {
                 return RedirectToPage("Login");
             }

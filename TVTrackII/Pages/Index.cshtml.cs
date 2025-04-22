@@ -15,14 +15,14 @@ namespace TVTrackII.Pages.Comentarios
         private readonly ApplicationDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public IndexModel(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
+        public IndexModel(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)// Constructor
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
         }
 
-        [BindProperty]
-        public Comentario NuevoComentario { get; set; } = new();
+        [BindProperty]  //Nuevo comentario a agregar
+        public Comentario NuevoComentario { get; set; } = new(); //Comentarios mostrados
 
         public List<ComentarioDTO> Comentarios { get; set; } = new();
 
@@ -42,7 +42,7 @@ namespace TVTrackII.Pages.Comentarios
                 }).ToList();
         }
 
-        public IActionResult OnPost()
+        public IActionResult OnPost() //Agrega un nuevo comentario a la base
         {
             var nombre = _httpContextAccessor.HttpContext?.Session.GetString("NombreUsuario");
             var usuario = _context.Usuarios.FirstOrDefault(u => u.Nombre == nombre);

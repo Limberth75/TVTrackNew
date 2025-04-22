@@ -31,12 +31,12 @@ namespace TVTrackII.Pages
 
         public IActionResult OnPost()
         {
-            if (string.IsNullOrEmpty(Correo) || string.IsNullOrEmpty(Contrasena))
+            if (string.IsNullOrEmpty(Correo) || string.IsNullOrEmpty(Contrasena))//Revisa que ambos campos estén llenos
             {
                 MensajeError = "Por favor ingresa ambos campos.";
                 return Page();
             }
-
+            // Revisa que el usuario exista
             var usuario = _context.Usuarios.FirstOrDefault(u => u.Correo == Correo && u.Contrasena == Contrasena);
 
             if (usuario == null)

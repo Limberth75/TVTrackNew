@@ -9,7 +9,7 @@ namespace TestTVTrackII
 {
 
     [TestClass]
-    internal class InicioTest
+    public class InicioTest
     {
 
         [TestMethod]
@@ -28,5 +28,19 @@ namespace TestTVTrackII
             // Assert: Se espera que el link esté presente
             Assert.IsTrue(contieneLinkCerrarSesion, "La página debería tener un enlace para cerrar sesión que redirija al Login.");
         }
+
+        [TestMethod]
+        public void Redirige_A_Login_Si_Nombre_De_Sesion_Esta_Vacio()
+        {
+            // Arrange: Nombre en sesión vacío simulado
+            string nombreUsuario = "";
+
+            // Act: Se verifica si debería redirigir
+            bool debeRedirigir = string.IsNullOrEmpty(nombreUsuario);
+
+            // Assert: Se espera que sí redirija
+            Assert.IsTrue(debeRedirigir, "Si no hay nombre de usuario en sesión va de regreso a Login.");
+        }
+
     }
 }

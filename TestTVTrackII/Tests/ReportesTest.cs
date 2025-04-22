@@ -9,7 +9,7 @@ namespace TestTVTrackII
 {
     [TestClass]
 
-    internal class ReportesTest
+    public class ReportesTest
     {
         // Clase falsa para simular el modelo
         public class ReportesModel

@@ -19,7 +19,7 @@ namespace TVTrackII.Pages
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public List<HistorialVisualizacion> Contenidos { get; set; } = new();
+        public List<HistorialVisualizacion> Contenidos { get; set; } = new();  // Lista de contenidos vistos por el usuario
 
         public void OnGet()
         {
